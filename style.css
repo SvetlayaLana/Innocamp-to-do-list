@@ -1,0 +1,32 @@
+*{
+    box-sizing: border-box;
+}
+
+body{
+    margin: 0;
+    padding: 0;
+}
+
+.modal-background{
+    position: absolute;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+}
+
+.modal-content{
+    background-color: white;
+    max-width: 500px;
+    width: 100%;
+    margin: 100px auto 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.modal-form{
+    display: flex;
+    flex-direction: column;
+}

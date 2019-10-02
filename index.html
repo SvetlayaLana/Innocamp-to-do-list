@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<head>
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <button class="btn button-add-item" id="button-add">Add Item</button>
+    <div class="modal-background" id="modal">
+        <div class="modal-content">
+            <div class="modal-title">Add To-Do item</div>
+            <form class="modal-form">
+                <input type="text" placeholder="Name *" required>
+                <input type="text" placeholder="Description">
+                <select>
+                    <option selected='selected' disabled>Priority *</option>
+                    <option value="low">low</option>
+                    <option value="middle">middle</option>
+                    <option value="high">high</option>
+                </select>
+                <input type="date" >
+                <div class="modal-form-footer">
+                    <button class="btn button-cancel">Cancel</button>
+                    <input type="submit" class="btn button-add" value="Add">
+                 </div>
+            </form>
+        </div>
+    </div>
+    <script src="main.js"></script>
+</body>
