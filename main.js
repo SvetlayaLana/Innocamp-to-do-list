@@ -8,4 +8,4 @@ document.querySelector('#modal').addEventListener('click', function(e){
     }    
 });
 
-document.querySelector('input[type=date]').value = new Date();
+

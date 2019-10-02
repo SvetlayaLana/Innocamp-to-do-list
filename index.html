@@ -7,12 +7,15 @@
     <button class="btn button-add-item" id="button-add">Add Item</button>
     <div class="modal-background" id="modal">
         <div class="modal-content">
-            <div class="modal-title">Add To-Do item</div>
+            <div class="modal-title">
+                <h3>Add To-Do item</h3>
+                <span>X</span>
+            </div>
             <form class="modal-form">
-                <input type="text" placeholder="Name *" required>
+                <input type="text" placeholder="Name *" maxlength="20" pattern="([a-zA-Z0-9]+\s*)+" required>
                 <input type="text" placeholder="Description">
-                <select>
-                    <option selected='selected' disabled>Priority *</option>
+                <select required>
+                    <option value="">Priority *</option>
                     <option value="low">low</option>
                     <option value="middle">middle</option>
                     <option value="high">high</option>
