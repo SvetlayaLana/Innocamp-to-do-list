@@ -1,8 +1,12 @@
-function saveToLocalStorage(note) {
-    let keys = getKeys();
-    let index = keys[keys.length - 1] + 1 || 1;
-    console.log(keys, index);
-    localStorage.setItem(`${index}`, JSON.stringify(note));
+function saveToLocalStorage(note, key) {
+    if (key) {
+        localStorage.setItem(key, JSON.stringify(note))
+    } else {
+        let keys = getKeys();
+        let index = keys[keys.length - 1] + 1 || 1;
+        localStorage.setItem(`${index}`, JSON.stringify(note));
+    }
+
 }
 
 function loadFromLocalStorage(key) {
@@ -57,10 +61,10 @@ function createNoteView(note, key) {
 
     let itemFooterButtonDone = document.createElement('button');
     itemFooterButtonDone.className = 'btn button-item-done';
-    if(note.state === 'done') {
+    if (note.state === 'done') {
         itemFooterButtonDone.append(`Mark as undone`);
         div.classList.add('done');
-    }else{
+    } else {
         itemFooterButtonDone.append(`Mark as done`);
     }
 
@@ -77,25 +81,30 @@ function createNoteView(note, key) {
     itemFooter.append(itemFooterButtonDone);
 
     div.addEventListener('click', function (e) {
-        if(e.target === this.querySelector('.button-item-delete')) {
+        if (e.target === this.querySelector('.button-item-delete')) {
             this.style.display = 'none';
             localStorage.removeItem(key);
         }
 
-        if(e.target === this.querySelector('.button-item-done')){
+        if (e.target === this.querySelector('.button-item-done')) {
             this.classList.toggle('done');
-            if (this.classList.contains('done')){
+            if (this.classList.contains('done')) {
                 e.target.innerText = 'Mark as undone';
                 note.state = 'done';
-            }else{
+            } else {
                 note.state = 'undone';
                 e.target.innerText = 'Mark as done';
             }
-            localStorage.setItem(key, JSON.stringify(note));
+            saveToLocalStorage(note, key);
         }
 
-        if(e.target === this.querySelector('.button-item-edit')){
-
+        if (e.target === this.querySelector('.button-item-edit')) {
+            document.querySelector('#modal').style.display = 'block';
+            document.querySelector('form').setAttribute('key', key);
+            document.querySelector('input[name="name"]').value = note.name;
+            document.querySelector('input[name="description"]').value = note.description;
+            document.querySelector('select[name="priority"]').value = note.priority;
+            document.querySelector('input[name="deadline"]').value = note.deadline;
         }
     });
 
@@ -113,6 +122,7 @@ function getKeys() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+    document.querySelector('form').reset();
     let keys = getKeys();
     for (let i of keys) {
         let note = loadFromLocalStorage(i);
@@ -130,16 +140,18 @@ document.querySelector('#modal').addEventListener('click', function (e) {
         e.target === document.querySelector('.button-form-cancel') ||
         e.target === document.querySelector(".modal-title span")) {
         this.style.display = 'none';
+        document.querySelector('form').reset();
+        document.querySelector('form').removeAttribute('key');
     }
 });
 
-document.querySelector('form').addEventListener('submit', function () {
+document.querySelector('form').addEventListener('submit', function (e) {
     document.querySelector('#modal').style.display = 'none';
-    let name = document.querySelector('input[name="name"]').value;
-    let description = document.querySelector('input[name="description"]').value;
-    let priorityItem = document.querySelector('select[name="priority"]');
+    let name = this.name.value;
+    let description = this.description.value;
+    let priorityItem = this.priority;
     let priority = priorityItem.options[priorityItem.selectedIndex].value;
-    let deadline = document.querySelector('input[name="deadline"]').value || 'no deadline';
+    let deadline = this.deadline.value || 'no deadline';
 
     let note = {
         name: name,
@@ -148,10 +160,15 @@ document.querySelector('form').addEventListener('submit', function () {
         deadline: deadline,
         state: 'undone'
     };
-    saveToLocalStorage(note);
 
-    // let noteView = createNoteView(note);
-    // document.querySelector('.content').append(noteView);
+    let key = this.getAttribute('key');
+    if(key){
+        console.log('save with key');
+        saveToLocalStorage(note, key);
+        document.querySelector('form').removeAttribute('key');
+    }else{
+        saveToLocalStorage(note);
+    }
 });
 
 
