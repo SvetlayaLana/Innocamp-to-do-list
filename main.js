@@ -9,10 +9,6 @@ function loadFromLocalStorage(key) {
     return JSON.parse(localStorage.getItem(key));
 }
 
-function findInLocalStorage(item) {
-
-}
-
 function createNoteView(note, key) {
     let div = document.createElement('div');
     div.className = 'todo-item';
@@ -61,7 +57,12 @@ function createNoteView(note, key) {
 
     let itemFooterButtonDone = document.createElement('button');
     itemFooterButtonDone.className = 'btn button-item-done';
-    itemFooterButtonDone.append('Mark as done');
+    if(note.state === 'done') {
+        itemFooterButtonDone.append(`Mark as undone`);
+        div.classList.add('done');
+    }else{
+        itemFooterButtonDone.append(`Mark as done`);
+    }
 
     let itemFooterButtonEdit = document.createElement('button');
     itemFooterButtonEdit.className = 'btn button-item-edit';
@@ -85,9 +86,12 @@ function createNoteView(note, key) {
             this.classList.toggle('done');
             if (this.classList.contains('done')){
                 e.target.innerText = 'Mark as undone';
+                note.state = 'done';
             }else{
+                note.state = 'undone';
                 e.target.innerText = 'Mark as done';
             }
+            localStorage.setItem(key, JSON.stringify(note));
         }
 
         if(e.target === this.querySelector('.button-item-edit')){
@@ -141,9 +145,9 @@ document.querySelector('form').addEventListener('submit', function () {
         name: name,
         description: description,
         priority: priority,
-        deadline: deadline
+        deadline: deadline,
+        state: 'undone'
     };
-    console.log(note.name);
     saveToLocalStorage(note);
 
     // let noteView = createNoteView(note);
