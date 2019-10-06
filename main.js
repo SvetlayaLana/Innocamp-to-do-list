@@ -100,11 +100,14 @@ function createNoteView(note, key) {
 
         if (e.target === this.querySelector('.button-item-edit')) {
             document.querySelector('#modal').style.display = 'block';
-            document.querySelector('form').setAttribute('key', key);
-            document.querySelector('input[name="name"]').value = note.name;
-            document.querySelector('input[name="description"]').value = note.description;
-            document.querySelector('select[name="priority"]').value = note.priority;
-            document.querySelector('input[name="deadline"]').value = note.deadline;
+            let form = document.querySelector('form');
+            form.setAttribute('key', key);
+            form.name.value = note.name;
+            form.description.value = note.description;
+            form.priority.value = note.priority;
+            form.deadline.value = note.deadline;
+            document.querySelector('.modal-title h3').textContent = 'Edit to-do item';
+            document.querySelector('.button-form-add').value = 'Edit';
         }
     });
 
@@ -142,6 +145,8 @@ document.querySelector('#modal').addEventListener('click', function (e) {
         this.style.display = 'none';
         document.querySelector('form').reset();
         document.querySelector('form').removeAttribute('key');
+        document.querySelector('.modal-title h3').textContent = 'Add to-do item';
+        document.querySelector('.button-form-add').value = 'Add';
     }
 });
 
