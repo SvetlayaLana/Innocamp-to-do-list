@@ -1,42 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>To-Do List</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="shortcut icon" type="image/png" href="favicon.png">
 </head>
 <body>
-    <button class="btn button-add" id="button-add"> + Add Item</button>
-    <div class="content">
-
-    </div>
-
-
+    <button class="btn button-add-item" id="button-add">Add Item</button>
     <div class="modal-background" id="modal">
         <div class="modal-content">
             <div class="modal-title">
                 <h3>Add To-Do item</h3>
                 <span>X</span>
             </div>
-            <form action="" class="modal-form">
-                <input type="text" name="name" placeholder="Name *" maxlength="20" pattern="([a-zA-Z0-9]+\s*)+" required>
-                <input type="text" name="description" placeholder="Description">
-                <select name="priority" required>
+            <form class="modal-form">
+                <input type="text" placeholder="Name *" maxlength="20" pattern="([a-zA-Z0-9]+\s*)+" required>
+                <input type="text" placeholder="Description">
+                <select required>
                     <option value="">Priority *</option>
                     <option value="low">low</option>
                     <option value="middle">middle</option>
                     <option value="high">high</option>
                 </select>
-                <input name="deadline" type="date" >
+                <input type="date" >
                 <div class="modal-form-footer">
-                    <input type="button" class="btn button-form-cancel" value="Cancel">
-                    <input type="submit" class="btn button-form-add" value="Add">
+                    <button class="btn button-cancel">Cancel</button>
+                    <input type="submit" class="btn button-add" value="Add">
                  </div>
             </form>
         </div>
     </div>
-    <script type="text/javascript" src="main.js"></script>
+    <script src="main.js"></script>
 </body>
-</html>
