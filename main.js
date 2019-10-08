@@ -190,13 +190,13 @@ document.querySelector('form').addEventListener('submit', function (e) {
 document.querySelector('.button-sort').addEventListener('click', function () {
     let toDoItems = document.querySelectorAll('.todo-item');
     for (let item of toDoItems) {
-        if (item.querySelector('.todo-item-priority span').textContent === 'middle') {
-            item.parentElement.append(item);
+        if (item.querySelector('.todo-item-priority span').textContent === 'middle' && !item.classList.contains('done')) {
+            item.parentElement.prepend(item);
         }
     }
     for (let item of toDoItems) {
-        if (item.querySelector('.todo-item-priority span').textContent === 'low') {
-            item.parentElement.append(item);
+        if (item.querySelector('.todo-item-priority span').textContent === 'high' && !item.classList.contains('done')) {
+            item.parentElement.prepend(item);
         }
     }
 });
