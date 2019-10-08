@@ -61,7 +61,7 @@ function createNoteView(note, key) {
 
     let itemFooterButtonDone = document.createElement('button');
     itemFooterButtonDone.className = 'btn button-item-done';
-    if (note.state === 'done') {
+    if (note.done) {
         itemFooterButtonDone.append(`Mark as undone`);
         div.classList.add('done');
     } else {
@@ -90,9 +90,9 @@ function createNoteView(note, key) {
             this.classList.toggle('done');
             if (this.classList.contains('done')) {
                 e.target.innerText = 'Mark as undone';
-                note.state = 'done';
+                note.done = true;
             } else {
-                note.state = 'undone';
+                note.done = false;
                 e.target.innerText = 'Mark as done';
             }
             saveToLocalStorage(note, key);
@@ -126,10 +126,21 @@ function getKeys() {
 
 document.addEventListener('DOMContentLoaded', function () {
     document.querySelector('form').reset();
+    document.querySelector('.search').value = '';
     let keys = getKeys();
-    for (let i of keys) {
-        let note = loadFromLocalStorage(i);
-        let noteView = createNoteView(note, i);
+    let notesMap = new Map();
+    for (let key of keys) {
+        let note = loadFromLocalStorage(key);
+        notesMap.set(key, note);
+    }
+    let notesArray = [...notesMap.entries()].sort((a, b) => {
+        if (a[1].done && !b[1].done) return 1;
+        if (a[1].done && b[1].done || !a[1].done && !b[1].done) return 0;
+        if (!a[1].done && b[1].done) return -1;
+    });
+    let notes = new Map(notesArray);
+    for (let note of notes) {
+        let noteView = createNoteView(note[1], note[0]);
         document.querySelector('.content').append(noteView);
     }
 });
@@ -163,16 +174,47 @@ document.querySelector('form').addEventListener('submit', function (e) {
         description: description,
         priority: priority,
         deadline: deadline,
-        state: 'undone'
+        done: false
     };
 
     let key = this.getAttribute('key');
-    if(key){
+    if (key) {
         console.log('save with key');
         saveToLocalStorage(note, key);
         document.querySelector('form').removeAttribute('key');
-    }else{
+    } else {
         saveToLocalStorage(note);
+    }
+});
+
+document.querySelector('.button-sort').addEventListener('click', function () {
+    let toDoItems = document.querySelectorAll('.todo-item');
+    for (let item of toDoItems) {
+        if (item.querySelector('.todo-item-priority span').textContent === 'middle') {
+            item.parentElement.append(item);
+        }
+    }
+    for (let item of toDoItems) {
+        if (item.querySelector('.todo-item-priority span').textContent === 'low') {
+            item.parentElement.append(item);
+        }
+    }
+});
+
+document.querySelector('.search').addEventListener('input', function () {
+    let toDoItems = document.querySelectorAll('.todo-item');
+    let regExp = new RegExp(`${this.value}`, 'gmi');
+    for (let item of toDoItems) {
+        let title = item.querySelector('.todo-item-title').innerText;
+        let description = item.querySelector('.todo-item-description');
+        if(description) description = description.innerText;
+        //console.log(title, description);
+        if (regExp.test(title) || regExp.test(description)) {
+            item.style.display = 'block';
+        }else{
+            item.style.display = 'none';
+        }
+
     }
 });
 

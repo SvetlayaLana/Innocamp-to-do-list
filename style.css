@@ -43,11 +43,26 @@ input,select,.btn{
     display: none;
 }
 
-.button-add{
+nav{
     position: fixed;
     top: 50px;
     left: 50px;
+    display: flex;
+    flex-direction: column;
+}
+
+.button-add,
+.button-sort{
     width: 150px;
+    margin-bottom: 10px;
+}
+
+.search{
+    padding: 5px;
+    border: 1px solid #21b5e24f;
+    border-radius: 10px;
+    box-shadow: inset 2px 2px 3px #b7deed;
+    height: 40px;
 }
 
 .content{
